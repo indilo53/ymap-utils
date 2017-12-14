@@ -1,1 +1,1 @@
-.\data\ymap_coords.txt filter=lfs diff=lfs merge=lfs -text
+data/ymap_coords.txt filter=lfs diff=lfs merge=lfs -text
