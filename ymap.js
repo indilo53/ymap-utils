@@ -6,6 +6,42 @@ const THREE         = require('three');
 
 const serializer = new XMLSerializer();
 
+function createNode(doc, name, children) {
+
+	const node = doc.createElement(name);
+
+	for(let k in children) {
+		if(children.hasOwnProperty(k)) {
+
+			const child = doc.createElement(k);
+
+			for(let k1 in children[k]) {
+
+				switch(k1) {
+
+					case '__text' : {
+						child.textContent = children[k][k1];
+						break;
+					}
+
+					default : {
+						child.setAttribute(k1, children[k][k1]);
+						break;
+					}
+
+				}
+
+			}
+
+			node.appendChild(child);
+
+		}
+	}
+
+	return node;
+
+}
+
 // https://stackoverflow.com/questions/42812861/three-js-pivot-point
 function rotateAboutPoint(obj, point, axis, theta, pointIsWorld){
 	
@@ -89,6 +125,10 @@ class YMAP extends EventEmitter {
 
 class YTYP extends EventEmitter {
 
+	get entityDefs() {
+		return xpath('//CMapTypes/archetypes/Item[@type="CBaseArchetypeDef"]', this.doc);
+	}
+
 	get entities() {
 		return xpath('//CMapTypes/archetypes/Item[@type="CMloArchetypeDef"]/entities/Item', this.doc);
 	}
@@ -167,6 +207,43 @@ class YTYP extends EventEmitter {
 
 		} else if(target instanceof YTYP) {
 			// TODO
+		}
+
+	}
+
+	addEntityDef(name) {
+
+		if(typeof name == 'string') {
+
+			const children = {
+				lodDist            : {value: '500.0'},
+				flags              : {value: 32},
+				specialAttribute   : {value: 0},
+				bbMin              : {x: '0.0', y: '0.0', z: '0.0'},
+				bbMax              : {x: '0.0', y: '0.0', z: '0.0'},
+				bsCentre           : {x: '0.0', y: '0.0', z: '0.0'},
+				bsRadius           : {value: '0.0'},
+				hdTextureDist      : {value: '5.0'},
+				name               : {__text: name},
+				textureDictionary  : {__text: name},
+				clipDictionary     : {},
+				drawableDictionary : {},
+				physicsDictionary  : {__text: 'prop_' + name},
+				assetType          : {__text: 'ASSET_TYPE_DRAWABLE'},
+				assetName          : {__text: name},
+				extensions         : {},
+			}
+
+			const node = createNode(this.doc, 'Item', children);
+
+			node.setAttribute('type', 'CBaseArchetypeDef');
+
+			xpath('//CMapTypes/archetypes', this.doc)[0].appendChild(node);
+
+		} else {
+
+			xpath('//CMapTypes/archetypes', this.doc)[0].appendChild(name);
+
 		}
 
 	}

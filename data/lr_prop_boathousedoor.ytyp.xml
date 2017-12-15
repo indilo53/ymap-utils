@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<CMapTypes>
+  <extensions/>
+  <archetypes>
+    <Item type="CBaseArchetypeDef">
+      <lodDist value="100.00000000"/>
+      <flags value="604110848"/>
+      <specialAttribute value="0"/>
+      <bbMin x="-0.00005600" y="-0.00419600" z="-1.25016100"/>
+      <bbMax x="1.84177600" y="0.05415600" z="1.25016800"/>
+      <bsCentre x="0.92086000" y="0.02498000" z="0.00000346"/>
+      <bsRadius value="1.55301300"/>
+      <hdTextureDist value="5.00000000"/>
+      <name>lr_Prop_BoatHouseDoor_L</name>
+      <textureDictionary>lr_PROP_BOATHOUSEDOOR</textureDictionary>
+      <clipDictionary/>
+      <drawableDictionary/>
+      <physicsDictionary>prop_boathousedoor</physicsDictionary>
+      <assetType>ASSET_TYPE_DRAWABLE</assetType>
+      <assetName>lr_Prop_BoatHouseDoor_L</assetName>
+      <extensions/>
+    </Item>
+    <Item type="CBaseArchetypeDef">
+      <lodDist value="100.00000000"/>
+      <flags value="604110848"/>
+      <specialAttribute value="0"/>
+      <bbMin x="-1.84211000" y="-0.00503800" z="-1.24997800"/>
+      <bbMax x="0.00004500" y="0.05470200" z="1.24998100"/>
+      <bsCentre x="-0.92103260" y="0.02483200" z="0.00000155"/>
+      <bsRadius value="1.55297300"/>
+      <hdTextureDist value="5.00000000"/>
+      <name>lr_Prop_BoatHouseDoor_R</name>
+      <textureDictionary>lr_PROP_BOATHOUSEDOOR</textureDictionary>
+      <clipDictionary/>
+      <drawableDictionary/>
+      <physicsDictionary>prop_boathousedoor</physicsDictionary>
+      <assetType>ASSET_TYPE_DRAWABLE</assetType>
+      <assetName>lr_Prop_BoatHouseDoor_R</assetName>
+      <extensions/>
+    </Item>
+  </archetypes>
+  <name>lr_PROP_BOATHOUSEDOOR</name>
+  <dependencies/>
+  <compositeEntityTypes/>
+</CMapTypes>
