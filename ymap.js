@@ -105,22 +105,6 @@ class YMAP extends EventEmitter {
 		entities.appendChild(newNode);
 	}
 
-	normalizeHashes() {
-
-		const entities       = this.entities;
-		const archetypeNames = xpath('//CMapData/entities/Item/archetypeName', this.doc);
-
-		for(let i=0; i<archetypeNames.length; i++) {
-			
-			this.emit('entity.normalize', i, archetypeNames.length - 1)
-			
-			if(archetypeNames[i].textContent.substr(0, 2) == '0x')
-				archetypeNames[i].textContent = 'hash_' + archetypeNames[i].textContent.substr(2, archetypeNames[i].textContent.length).toUpperCase();
-
-		}
-
-	}
-
 }
 
 class YTYP extends EventEmitter {
@@ -308,22 +292,6 @@ class YTYP extends EventEmitter {
 					break;
 				}
 			}
-
-		}
-
-	}
-
-	normalizeHashes() {
-
-		const entities       = this.entities;
-		const archetypeNames = xpath('//CMapTypes/archetypes/Item[@type="CMloArchetypeDef"]/entities/Item/archetypeName', this.doc);
-
-		for(let i=0; i<archetypeNames.length; i++) {
-			
-			this.emit('entity.normalize', i, archetypeNames.length - 1)
-			
-			if(archetypeNames[i].textContent.substr(0, 2) == '0x')
-				archetypeNames[i].textContent = 'hash_' + archetypeNames[i].textContent.substr(2, archetypeNames[i].textContent.length).toUpperCase();
 
 		}
 

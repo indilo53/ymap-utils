@@ -46,10 +46,9 @@ function parseRotation(val) {
 
 program
 	.version(pkg.version)
-  .description('YMAP/YTYP toolkit')
+  .description('YMAP toolkit')
   .option('-i,   --inject2ytp',            'Inject YMAP to YTYP')
   .option('-f,   --find',                  'Find YMAP')
-  .option('-gp,  --genprops',              'Generate props definitions')
   .option('-yt,  --ytyp      [file]',      'YTYP file')
   .option('-ym,  --ymap      [file]',      'YMAP file')
   .option('-r,   --room      [name]',      'Room name')
@@ -57,20 +56,15 @@ program
   .option('-rot, --rotation  <rot>',       'Initial rotation => x,y,z,w', parseRotation)
   .option('-n,   --name      [name]',      'Output file name without extension')
   .option('-r,   --radius    [radius]',    'Radius')
-  .option('-d    --directory [directory]', 'Directory')
 ;
 
 program.on('--help', function() {
-	
 	console.log('');
 	console.log('  Examples:');
 	console.log('');
 	console.log('    ymap --find --position 1009.54500000,-3196.59700000,-39.99353000 --radius 25');
 	console.log('    ymap --inject2ytp --ytyp bkr_biker_dlc_int_ware01.ytyp.xml --ymap weed2.ymap.xml --room MethMain --position 1009.54500000,-3196.59700000,-39.99353000 --rotation 0.0,0.0,0.0,1.0 --name merged');
-	console.log('    ymap --genprops --dir ./props/stream');
-	console.log('    ymap --genprops --ytyp props_def.ytyp.xml');
 	console.log('');
-
 })
 
 program.parse(process.argv)
@@ -105,13 +99,7 @@ if(program.inject2ytp) {
 			console.error('Merge => ' + i + '/' + max)
 		})
 
-		ytyp.on('entity.normalize', function(i, max) {
-			console.error('Normalize => ' + i + '/' + max)
-		})
-
 		ytyp.merge(ymap, program.room, program.position, program.rotation);
-		
-		ytyp.normalizeHashes();
 		
 		fs.writeFileSync(program.name + '.ytyp.xml', ytyp.build());
 
@@ -149,54 +137,5 @@ if(program.inject2ytp) {
 		}
 
 	});
-
-} else if(program.genprops) {
-
-	if(typeof program.directory == 'undefined' && typeof program.ytyp == 'undefined') {
-		console.error('--directory or --ytyp or both required');
-		return;
-	}
-
-	if(typeof program.ytyp != 'undefined' && !fs.existsSync(program.ytyp)) {
-		console.error('File ' + program.ytyp + ' not found');
-		return;
-	}
-
-	const genYtyp = new YTYP(fs.readFileSync(__dirname + '/data/lr_prop_boathousedoor.ytyp.xml', 'utf8'));
-
-	if(typeof program.directory != 'undefined') {
-
-		const ydr = 
-			fs.readdirSync(program.directory)
-			.filter(e => {
-				const buff = e.split('.');
-				return buff[buff.length - 1] == 'ydr';
-			})
-			.map(e => {
-				const buff = e.split('.');
-				buff.pop()
-				return buff.join('.')
-			})
-		;
-
-		for(let i=0; i<ydr.length; i++) {
-			console.log(ydr[i])
-			genYtyp.addEntityDef(ydr[i])
-		}
-
-	}
-
-	if(typeof program.ytyp != 'undefined'){
-
-		const ytyp = new YTYP(fs.readFileSync(program.ytyp, 'utf8'));
-
-		for(let i=0; i<ytyp.entityDefs.length; i++) {
-			console.log(ytyp.entityDefs[i].getElementsByTagName('name')[0].textContent);
-			genYtyp.addEntityDef(ytyp.entityDefs[i]);
-		}
-
-	}
-
-	fs.writeFileSync('lr_prop_boathousedoor.ytyp.xml', genYtyp.build());
 
 } 
